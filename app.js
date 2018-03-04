@@ -1,22 +1,15 @@
-const fs = require('fs')
 const getLocation = require('./scripts/getLocationByIp')
-const getWeather = require('./scripts/getWeatherOWM');
+const getWeather = require('./scripts/getWeatherOWM')
+const mapToFile = require('./scripts/mapToFile')
+const jsonToFile = require('./scripts/jsonToFile');
 
 (async () => {
-  const location = await getLocation()
-  const weather = await getWeather(...location.coords)
-  exportData(location, weather)
+  try{
+    const location = await getLocation()
+    const weather = await getWeather(...location.coords)
+    mapToFile(...location.coords)
+    jsonToFile(location, weather)
+  } catch (e) {
+    console.log(e)
+  }
 })()
-
-function exportData (...args) {
-  const newDate = new Date()
-  const dateString = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + newDate.getDate()
-  fs.writeFile(
-    `./logs/${dateString}.json`,
-    JSON.stringify(args), 
-    (err) => {
-      if (err) return console.log('Already have a file for this date!')
-      console.log(`File written to logs/${dateString}.json`)
-    }
-  )
-}

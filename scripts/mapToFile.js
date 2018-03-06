@@ -12,8 +12,14 @@ module.exports = (lat, lon) => {
 
 async function getMap (lat, lon, maptype) {
 	await fetch(`${urlBase}&maptype=${maptype}&center=${lat},${lon}&key=${mapsKey}`)
-		.then(res => res.body
-			.pipe(fs.createWriteStream(`./logs/${maptype}.png`))
-			.on('close', () => console.log(`File written to logs/${maptype}.png`))
-		)
+		.then(async res => {
+			const newDate = new Date()
+			const dateString = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + newDate.getDate()
+			const dir = `./logs/${dateString}`
+			if (!fs.existsSync(dir))
+				await fs.mkdirSync(dir)
+			res.body
+			.pipe(fs.createWriteStream(`${dir}/${maptype}.png`))
+				.on('close', () => console.log(`File written to ${dir}/${maptype}.png`))
+		})
 }

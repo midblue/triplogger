@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "dotenv-safe": "^5.0.1",
     "geoip-lite": "^1.2.1",
+    "got": "^8.3.0",
     "node-fetch": "^2.0.0",
     "phantom": "^4.0.12"
   },

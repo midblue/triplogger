@@ -1,10 +1,9 @@
 const fetch = require('node-fetch')
 
-const apiKey = require('./OWMKey.js')
-const apiUrl = 'https://api.openweathermap.org/data/2.5/weather'
+const apiUrl = `https://api.openweathermap.org/data/2.5/weather?APPID=${process.env.OWM}`
 
 module.exports = async (lat, lon) => {
-  return await fetch(`${apiUrl}?lat=${lat}&lon=${lon}&APPID=${apiKey}`)
+  return await fetch(`${apiUrl}&lat=${lat}&lon=${lon}`)
     .then(res => res.json())
     .then(json => ({ 
       weather: json.weather[0].main, 
